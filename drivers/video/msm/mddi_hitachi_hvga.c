@@ -141,7 +141,7 @@ static struct display_table mddi_hitachi_display_off[] = {
 	{REGFLAG_DELAY, 130, {}},
 	{REGFLAG_END_OF_TABLE, 0x00, {}}
 };
-#endif
+//#endif
 
 static struct display_table mddi_hitachi_sleep_mode_on_data[] = {
 	// Display off sequence
@@ -153,7 +153,7 @@ static struct display_table mddi_hitachi_sleep_mode_on_data[] = {
 	{REGFLAG_DELAY, 40, {}},
 	{REGFLAG_END_OF_TABLE, 0x00, {}}
 };
-
+#endif
 static struct display_table mddi_hitachi_initialize_1st[] = {
 
 	// Power ON Sequence 
@@ -354,7 +354,7 @@ void display_table(struct display_table *table, unsigned int count)
                 break;
 				
             default:
-                mddi_host_register_cmds_write8(reg, table[i].count, table[i].val_list, 1, 0, 0);
+                mddi_host_register_cmds_write8(reg, table[i].count, table[i].val_list, 0, 0, 0);
 				//EPRINTK("%s: reg : %x, val : %x.\n", __func__, reg, table[i].val_list[0]);
        	}
     }
@@ -624,7 +624,7 @@ static int mddi_hitachi_lcd_store_on(void)
 
 static int mddi_hitachi_lcd_off(struct platform_device *pdev)
 {
-	display_table(mddi_hitachi_sleep_mode_on_data, sizeof(mddi_hitachi_sleep_mode_on_data)/sizeof(struct display_table));
+//	display_table(mddi_hitachi_sleep_mode_on_data, sizeof(mddi_hitachi_sleep_mode_on_data)/sizeof(struct display_table));
 	mddi_hitachi_lcd_panel_poweroff();
 	is_lcd_on = FALSE;
 	return 0;
@@ -655,7 +655,7 @@ ssize_t mddi_hitachi_lcd_store_onoff(struct device *dev, struct device_attribute
 		is_lcd_on = FALSE;
 	}
 
-	return 0;
+	return count;
 }
 
 int mddi_hitachi_position(void)
