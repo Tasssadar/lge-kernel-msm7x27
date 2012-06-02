@@ -95,7 +95,7 @@ DECLARE_DELAYED_WORK(sleep_workqueue, bluesleep_sleep_work);
 #define BT_TXDATA	0x02
 #define BT_ASLEEP	0x04
 #ifndef CONFIG_LGE_BRCM_H4_LPM_SUPPORT_PATCH
-#define CONFIG_LGE_BRCM_H4_LPM_SUPPORT_PATCH
+//#define CONFIG_LGE_BRCM_H4_LPM_SUPPORT_PATCH
 #endif
 
 //Un-comment for root permission
@@ -179,12 +179,10 @@ void bluesleep_sleep_wakeup(void)
 		/*Activating UART */
 		hsuart_power(1);
 	}
-#if defined(CONFIG_LGE_BRCM_H4_LPM_SUPPORT_PATCH)
 	else {
 		/* Just start the timer if not asleep */
 		mod_timer(&tx_timer, jiffies + (TX_TIMER_INTERVAL * HZ));
 	}
-#endif
 }
 
 /**
