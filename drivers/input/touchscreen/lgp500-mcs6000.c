@@ -248,14 +248,14 @@ static void mcs6000_ts_work_func(struct work_struct *work)
 	          if(input_type == MULTI_POINT_TOUCH || input_type == SINGLE_POINT_TOUCH)
 	            {
 	              //input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, read_buf[4]);
-	              input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, 1);
+	              input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, read_buf[4]);
 	              input_report_abs(ts->input_dev, ABS_MT_POSITION_X, (((read_buf[1] & 0xf0) << 4) | read_buf[2]));
 	              input_report_abs(ts->input_dev, ABS_MT_POSITION_Y, (((read_buf[1] & 0x0f) << 8) | read_buf[3]));
 	              input_mt_sync(ts->input_dev);
 
 	              if(input_type == MULTI_POINT_TOUCH)
 	                {
-	                  input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, 1);
+	                  input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, read_buf[4]);
 	                  input_report_abs(ts->input_dev, ABS_MT_POSITION_X, (((read_buf[5] & 0xf0) << 4) | read_buf[6]));
 	                  input_report_abs(ts->input_dev, ABS_MT_POSITION_Y, (((read_buf[5] & 0x0f) << 8) | read_buf[7]));
 	                  input_mt_sync(ts->input_dev);
@@ -1046,6 +1046,7 @@ static int mcs6000_ts_probe(struct i2c_client *client, const struct i2c_device_i
 
 	input_set_abs_params(ts->input_dev, ABS_MT_POSITION_X, pdata->ts_x_min, pdata->ts_x_max, 0, 0);
 	input_set_abs_params(ts->input_dev, ABS_MT_POSITION_Y, pdata->ts_y_min, pdata->ts_y_max, 0, 0);
+	input_set_abs_params(ts->input_dev, ABS_MT_TOUCH_MAJOR, 0, 255, 0, 0);
 
 	ret = input_register_device(ts->input_dev);
 	if (ret < 0) {
